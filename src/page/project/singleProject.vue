@@ -7,7 +7,7 @@
 				<el-col :span="20">
 					<el-collapse v-model="activeNames" @change="handleChange">
 						<el-collapse-item title="132.121.92.165" name="1">
-							<el-col :span="18">
+							<el-col :span="18" class="project-content">
 								<p>作用：广东ITSM负载均衡域</p>
 								<p>配置：centos 6.2</p>
 							</el-col>
@@ -16,18 +16,18 @@
 							</el-col>
 							<el-col :span="24" class="account-table">
 								<el-table :data="tableData">
-									<el-table-column prop="account" label="账号" width="100">
+									<el-table-column prop="account" label="账号" width="150">
 									</el-table-column>
 									<el-table-column prop="desc" label="说明">
 									</el-table-column>
-									<el-table-column prop="tag" label="标签" width="100" :filters="[{ text: '应用1', value: '应用1' }, { text: '数据库', value: '数据库' },{ text: '应用2', value: '应用2' }]" :filter-method="filterTag" filter-placement="bottom-end">
+									<el-table-column prop="tag" label="标签" width="100" :filters="[{ text: '主应用', value: '主应用' }, { text: '数据库', value: '数据库' },{ text: '接口', value: '接口' },{ text: '进程', value: '进程' }]" :filter-method="filterTag" filter-placement="bottom-end">
 										<template scope="scope">
 											<el-tag :type="scope.row.tag === 'ITSM' ? 'primary' : 'success'" close-transition>{{scope.row.tag}}</el-tag>
 										</template>
 									</el-table-column>
-									<el-table-column label="操作" width="200">
+									<el-table-column label="操作" width="250">
 										<template scope="scope">
-											<el-button @click="handleView(scope.$index, scope.row)" size="small">查看</el-button>
+											<el-button @click="handleView(scope.$index, scope.row)" size="small">查看密码</el-button>
 											<el-button @click="handleEdit(scope.$index, scope.row)" size="small">修改</el-button>
 											<el-button @click="handleDelete(scope.$index, scope.row)" :plain="true" type="danger" size="small">删除</el-button>
 										</template>
@@ -36,7 +36,7 @@
 							</el-col>
 						</el-collapse-item>
 						<el-collapse-item title="132.121.92.166" name="2">
-							<el-col :span="18">
+							<el-col :span="18" class="project-content">
 								<p>作用：广东ITSM应用域</p>
 								<p>配置：centos 6.2</p>
 							</el-col>
@@ -48,7 +48,7 @@
 				</el-col>
 			</el-row>
 		</main>
-		<el-dialog title="账号信息" :visible.sync="showEditDialog" @close="handleFlagInit">
+		<el-dialog title="添加账号" :visible.sync="showAddDialog" @close="handleFlagInit">
 			<el-form :model="form">
 				<el-form-item label="账号" :label-width="formLabelWidth">
 					<el-input v-model="form.account" auto-complete="off"></el-input>
@@ -70,11 +70,59 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
+				<el-button @click="showAddDialog = false">取 消</el-button>
+				<el-button type="primary" @click="showAddDialog = false">确 定</el-button>
+			</div>
+		</el-dialog>
+		<el-dialog title="编辑账号" :visible.sync="showEditDialog" @close="handleFlagInit">
+			<el-form :model="form">
+				<el-form-item label="账号" :label-width="formLabelWidth">
+					<el-input v-model="form.account" :disabled="true"></el-input>
+				</el-form-item>
+				<el-form-item label="旧密码" :label-width="formLabelWidth">
+					<el-input type="password" v-model="form.oldpassword" auto-complete="off"></el-input>
+				</el-form-item>
+				<el-form-item label="密码" :label-width="formLabelWidth">
+					<el-input type="password" v-model="form.newpassword" auto-complete="off"></el-input>
+				</el-form-item>
+				<el-form-item label="重复密码" :label-width="formLabelWidth">
+					<el-input type="password" v-model="form.dbpassword" auto-complete="off"></el-input>
+				</el-form-item>
+				<el-form-item label="标签" :label-width="formLabelWidth">
+					<el-select v-model="form.tag" placeholder="选择标签">
+						<el-option label="数据库" value="数据库"></el-option>
+						<el-option label="进程" value="进程"></el-option>
+						<el-option label="接口" value="接口"></el-option>
+						<el-option label="主应用" value="主应用"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="说明" :label-width="formLabelWidth">
+					<el-input type="textarea" v-model="form.desc" auto-complete="off"></el-input>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
 				<el-button @click="showEditDialog = false">取 消</el-button>
 				<el-button type="primary" @click="showEditDialog = false">确 定</el-button>
 			</div>
 		</el-dialog>
-
+		<el-dialog title="查看密码" :visible.sync="showViewDialog" @close="handleFlagInit" :close-on-click-modal=false>
+			<el-form :model="form">
+				<el-form-item label="账号" :label-width="formLabelWidth">
+					<p>{{viewform.account}}</p>
+				</el-form-item>
+				<el-form-item label="密码" :label-width="formLabelWidth">
+					<el-col :span="10">
+						<p v-if="viewform.showPass">{{viewform.pass}}</p>
+						<el-input v-else placeholder="请输入验证码" v-model="viewform.code">
+						</el-input>
+					</el-col>
+					<el-button v-if="!viewform.showPass" :disabled="!canVerify" @click="sendVerificationCode">生成验证码（{{verifyInterval}}）</el-button>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button v-if="!viewform.showPass" type="primary" @click="confirmVerificationCode">开始验证</el-button>
+			</div>
+		</el-dialog>
 	</div>
 
 </template>
@@ -90,7 +138,7 @@
 				tableData: [{
 					account: 'itsm',
 					desc: '普通账号',
-					tag: '应用1',
+					tag: '主应用',
 					project: '165'
 				}, {
 					account: 'root',
@@ -100,12 +148,12 @@
 				}, {
 					account: 'test',
 					desc: '测试账号',
-					tag: '应用2',
+					tag: '主应用',
 					project: '165'
 				}, {
 					account: 'mini',
 					desc: '迷你账号',
-					tag: '数据库',
+					tag: '接口',
 					project: '165'
 				}],
 				form: {
@@ -115,8 +163,18 @@
 					tag: '',
 					desc: ''
 				},
+				viewform: {
+					account: '',
+					pass: '',
+					code: '',
+					showPass: false
+				},
 				formLabelWidth: '100px',
+				showAddDialog: false,
 				showEditDialog: false,
+				showViewDialog: false,
+				canVerify: true,
+				verifyInterval: 60,
 				curProject: null,
 				curAccount: null,
 				action: null
@@ -137,23 +195,30 @@
 
 			},
 			handleAdd(event) {
-				this.showEditDialog = true
+				this.showAddDialog = true
 				this.curProject = event.currentTarget.dataset.curProject
 				this.action = 'add'
 			},
 			handleView(index, row) {
+				this.showViewDialog = true
 				this.curAccount = row.account
 				this.curProject = row.project
 				this.action = 'view'
+
+				this.viewform.account = row.account
+				this.viewform.pass = 'dindin'
 			},
 			handleEdit(index, row) {
 				this.showEditDialog = true
 				this.curAccount = row.account
 				this.curProject = row.project
 				this.action = 'edit'
+
+				this.form.account = row.account
+				this.form.tag = row.tag
+				this.form.desc = row.desc
 			},
 			handleDelete(index, row) {
-				console.log(event.currentTarget)
 				this.curAccount = row.account
 				this.curProject = row.project
 				this.action = 'delete'
@@ -164,7 +229,7 @@
 				}).then(() => {
 					this.$message({
 						type: 'success',
-						message: '删除成功!'
+						message: this.curAccount + '账号删除成功'
 					});
 					this.handleFlagInit()
 				}).catch(() => {
@@ -180,6 +245,8 @@
 				this.action = null
 				this.curProject = null
 				this.curAccount = null
+				this.canVerify = true
+				this.verifyInterval = 60
 				this.form = {
 					account: '',
 					password: '',
@@ -187,13 +254,34 @@
 					tag: '',
 					desc: ''
 				}
+				this.viewform = {
+					account: '',
+					pass: '',
+					code: '',
+					showPass: false
+				}
+			},
+			sendVerificationCode() {
+				var _cpthis = this
+				this.canVerify = false
+				var vt = setInterval(function() {
+					if(!_cpthis.canVerify) {
+						_cpthis.verifyInterval--
+					} else {
+						clearInterval(vt)
+					}
+				}, 1000)
+			},
+			confirmVerificationCode() {
+				this.viewform.showPass = true
 			}
 		}
 	}
 </script>
 <style scoped>
-	.account-table {
-		margin: 10px 0;
+	.account-table,
+	.project-content {
+		margin-bottom: 10px;
 	}
 	
 	p {
