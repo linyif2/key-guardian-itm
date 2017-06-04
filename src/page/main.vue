@@ -8,7 +8,13 @@
 							Key Guardian
 						</span>
 						<el-menu-item index="1" :route="{name:'project'}">项目主页</el-menu-item>
-						<el-menu-item index="2" :route="{name:'system'}">系统管理</el-menu-item>
+						<el-submenu index="2">
+							<template slot="title">系统管理</template>
+							<el-menu-item index="2-1" :route="{path:'/main/system/accountCfg'}">账号配置</el-menu-item>
+							<el-menu-item index="2-2" :route="{path:'/main/system/menuCfg'}">菜单配置</el-menu-item>
+							<el-menu-item index="2-3" :route="{path:'/main/system/roleCfg'}">角色配置</el-menu-item>
+							<el-menu-item index="2-4" :route="{path:'/main/system/userCfg'}">人员配置</el-menu-item>
+						</el-submenu>
 						<el-menu-item class="right" index="3" :route="{name:'index'}">退出</el-menu-item>
 					</el-menu>
 				</el-col>
