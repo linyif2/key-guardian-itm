@@ -3,12 +3,12 @@
 		<el-table :data="tableData" border style="width: 100%" highlight-current-row @row-click="handleCurrentChange">
 			<el-table-column prop="name" label="名称" width="200">
 			</el-table-column>
-			<el-table-column prop="desc" label="说明">
-			</el-table-column>
 			<el-table-column prop="tag" label="标签" width="100" :filters="[{ text: 'ITSM', value: 'ITSM' }, { text: 'ITMP', value: 'ITMP' }, { text: '公共', value: '公共' }]" :filter-method="filterTag" filter-placement="bottom-end">
 				<template scope="scope">
 					<el-tag :type="scope.row.tag === 'ITSM' ? 'primary' : 'success'" close-transition>{{scope.row.tag}}</el-tag>
 				</template>
+			</el-table-column>
+			<el-table-column prop="desc" label="说明">
 			</el-table-column>
 		</el-table>
 	</div>
@@ -67,7 +67,7 @@
 				return row.tag === value;
 			},
 			handleCurrentChange(val) {
-				console.log(val.name+"-"+val.id);
+				console.log(val.name + "-" + val.id);
 				this.$router.push({
 					name: 'singleProject',
 					params: {
@@ -81,4 +81,5 @@
 </script>
 
 <style>
+
 </style>

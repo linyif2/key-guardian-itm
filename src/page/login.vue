@@ -3,17 +3,18 @@
 		<header class="header">
 			<el-row type="flex" class="login-bg" justify="center" align="middle">
 				<div class="login-frame">
-					<h3 style="text-align: center;">神奇の系统</h3>
-					<el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2">
+					<h3 style="text-align: center;">这是个神奇の系统</h3>
+					<el-alert v-if="loginForm.error!=''" :title="loginForm.error" type="warning" show-icon :closable=false></el-alert>
+					<el-form :model="loginForm" ref="loginForm" :rules="validateRule">
 						<el-form-item label="账号" prop="account">
-							<el-input type="text" v-model="ruleForm2.account"></el-input>
+							<el-input type="text" v-model="loginForm.account"></el-input>
 						</el-form-item>
 						<el-form-item label="密码" prop="password">
-							<el-input type="password" v-model="ruleForm2.password"></el-input>
+							<el-input type="password" v-model="loginForm.password"></el-input>
 						</el-form-item>
-						<br>
+
 						<el-form-item>
-							<el-button type="success" class="btn" @click="submitForm('ruleForm2')">登录</el-button>
+							<el-button type="success" class="btn" @click="submitForm('loginForm')">登录</el-button>
 						</el-form-item>
 					</el-form>
 				</div>
@@ -23,46 +24,35 @@
 </template>
 
 <script>
+	import { mapActions } from 'vuex'
+	import { USER_SIGNIN } from '../store/user'
 	export default {
 		name: 'login',
 		data() {
 			var checkAccount = (rule, value, callback) => {
 				if(!value) {
 					return callback(new Error('请输入账号'));
-				}
-				//				setTimeout(() => {
-				//					if(!Number.isInteger(value)) {
-				//						callback(new Error('请输入数字值'));
-				//					} else {
-				//						if(value < 18) {
-				//							callback(new Error('必须年满18岁'));
-				//						} else {
-				//							callback();
-				//						}
-				//					}
-				//				}, 1000);
-				else {
+				} else {
 					callback();
 				}
 			};
-			var validatePass = (rule, value, callback) => {
-				if(value === '') {
+			var checkPass = (rule, value, callback) => {
+				if(!value) {
 					callback(new Error('请输入密码'));
 				} else {
-					//					if(this.ruleForm2.password !== '') {
-					//						this.$refs.ruleForm2.validateField('password');
-					//					}
 					callback();
 				}
 			};
 			return {
-				ruleForm2: {
+				loginForm: {
+					account: '',
 					password: '',
-					account: ''
+					error: '',
+					token: ''
 				},
-				rules2: {
+				validateRule: {
 					password: [{
-						validator: validatePass,
+						validator: checkPass,
 						trigger: 'blur'
 					}],
 					account: [{
@@ -70,24 +60,32 @@
 						trigger: 'blur'
 					}]
 				}
-			};
+			}
 		},
 		methods: {
+			...mapActions([USER_SIGNIN]),
 			submitForm(formName) {
-				this.$refs[formName].validate((valid) => {
+				var _this = this
+				_this.loginForm.token = "FEW0F9WU92J4"
+				_this.$refs[formName].validate((valid) => {
 					if(valid) {
-						console.log('submit!');
-						this.$router.push({
-							name: 'project'
-						});
+						console.log('submit:', _this.loginForm);
+						_this.USER_SIGNIN({
+							account: _this.loginForm.account,
+							token: _this.loginForm.token
+						})
+						_this.$router.replace({
+							path: '/main/project'
+						})
 					} else {
-						console.log('error submit!');
+						console.log('error submit');
+						_this.setErrorMessage('账号或密码错误')
 						return false;
 					}
 				});
 			},
-			resetForm(formName) {
-				this.$refs[formName].resetFields();
+			setErrorMessage(msg) {
+				this.loginForm.error = msg
 			}
 		}
 	}
