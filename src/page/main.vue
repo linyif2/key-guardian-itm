@@ -3,8 +3,7 @@
 		<el-row type="flex" justify="center">
 			<el-col :span="20">
 				<header class="header">
-
-					<el-menu default-active="1" class="el-menu-nav" mode="horizontal" @select="" :router="true">
+					<el-menu theme="dark" default-active="1" class="el-menu-nav" mode="horizontal" @select="" :router="true">
 						<span class="header">
 							Key Guardian
 						</span>
@@ -13,11 +12,13 @@
 							<template slot="title">系统管理</template>
 							<el-menu-item index="2-2" :route="{path:'/main/system/menuCfg'}">菜单配置</el-menu-item>
 							<el-menu-item index="2-3" :route="{path:'/main/system/roleCfg'}">角色配置</el-menu-item>
-							<el-menu-item index="2-4" :route="{path:'/main/system/userCfg'}">人员配置</el-menu-item>
+							<el-menu-item index="2-4" :route="{path:'/main/system/userCfg'}">用户管理</el-menu-item>
 						</el-submenu>
-						<el-submenu index="3" class="right">
+						<el-submenu index="3" class="right user-part">
 							<template slot="title">{{user.account}}</template>
-							<el-menu-item index="3-1" @click="logout">退出</el-menu-item>
+							<el-menu-item index="3-1" @click="">个人中心</el-menu-item>
+
+							<el-menu-item index="3-2" @click="logout">退出</el-menu-item>
 						</el-submenu>
 					</el-menu>
 
@@ -51,14 +52,16 @@
 	}
 </script>
 
-<style scoped>
+<style>
 	.el-menu-nav {
 		display: flex;
 	}
 	
 	.el-menu-nav .header {
 		line-height: 60px;
-		padding: 0 10px;
+		padding: 0 20px;
+		background-color: #1D8CE0;
+		color: #FFFFFF;
 	}
 	
 	.el-menu-nav .user-info {
@@ -69,6 +72,22 @@
 	
 	.el-menu-nav .right {
 		margin-left: auto;
+	}
+	
+	.el-menu-nav .user-part {
+		min-width: 100px;
+		text-align: center;
+	}
+	
+	.el-menu-item {
+		text-align: center;
+	}
+	.page-header{
+		padding: 5px 0 15px;
+	}
+	.page-header .header-text {
+		font-size: 18px;
+		font-weight: 600;
 	}
 	
 	main {

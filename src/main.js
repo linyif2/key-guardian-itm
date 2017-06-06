@@ -14,13 +14,6 @@ router.beforeEach((to, from, next) => {
 		auth = true
 	} = to.meta
 	var token = store.state.user.token
-	/*	if(auth && !isLogin && path !== '/login') {
-			
-			next({
-				path: '/login'
-			})
-		}
-		next()*/
 	if(auth) { // 判断该路由是否需要登录权限
 		if(token) { // 通过vuex state获取当前的token是否存在
 			next();

@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<el-row type="flex" align="middle">
-			<span class="page-header">
-				人员配置
+		<el-row type="flex" class="page-header">
+			<span class="header-text">
+				<i class="el-icon-setting"></i> 用户管理
 			</span>
 			<el-button style="margin-left: auto;" @click="addUser" size="small" icon="plus">添加</el-button>
 		</el-row>
@@ -57,50 +57,6 @@
 								<el-checkbox label="支点项目管理"></el-checkbox>
 							</div>
 							<div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
 								<el-checkbox label="CMDB项目开发"></el-checkbox>
 							</div><div>
 								<el-checkbox label="CMDB项目开发"></el-checkbox>
@@ -232,11 +188,7 @@
 </script>
 
 <style scoped>
-	.page-header {
-		font-size: 20px;
-		font-weight: 600;
-		margin: 10px 0;
-	}
+	
 	
 	.user-role {
 		padding-left: 30px;

@@ -1,7 +1,9 @@
 <template>
 	<div>
-		<el-row>
-			<el-col :span="24">菜单</el-col>
+		<el-row type="flex" class="page-header">
+			<span class="header-text">
+				<i class="el-icon-setting"></i> 菜单配置
+			</span>
 		</el-row>
 	</div>
 </template>

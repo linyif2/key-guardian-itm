@@ -1,61 +1,62 @@
 <template>
 	<div>
-		<header>
-			<h4>{{pname}}</h4></header>
-		<main>
-			<el-row>
-				<el-col :span="24">
-					<el-collapse v-model="activeNames" @change="handleChange">
-						<el-collapse-item title="132.121.92.165" name="1">
-							<el-col :span="18" class="project-content">
-								<p>作用：广东ITSM负载均衡域</p>
-								<p>配置：centos 6.2</p>
-							</el-col>
-							<el-col :span="6" style="text-align: right;">
-								<el-button size="small" data-cur-project="165" @click="handleAdd($event)">新增</el-button>
-							</el-col>
-							<el-col :span="24" class="account-table">
-								<el-table :data="tableData">
-									<el-table-column type="expand">
-										<template scope="props">
-											<el-form label-position="left" inline class="table-expand">
-												<el-form-item :label="item.label" v-for="item in json2obj(props.row.desc)">
-													<span>{{item.text}}</span>
-												</el-form-item>
-											</el-form>
-										</template>
-									</el-table-column>
-									<el-table-column prop="account" label="账号">
-									</el-table-column>
-									<el-table-column prop="tag" label="标签" :filters="[{ text: '主应用', value: '主应用' }, { text: '数据库', value: '数据库' },{ text: '接口', value: '接口' },{ text: '进程', value: '进程' }]" :filter-method="filterTag" filter-placement="bottom-end">
-										<template scope="scope">
-											<el-tag :type="scope.row.tag === 'ITSM' ? 'primary' : 'success'" close-transition>{{scope.row.tag}}</el-tag>
-										</template>
-									</el-table-column>
-									<el-table-column label="操作">
-										<template scope="scope">
-											<el-button @click="handleView(scope.$index, scope.row)" size="small">查看密码</el-button>
-											<el-button @click="handleEdit(scope.$index, scope.row)" size="small">修改</el-button>
-											<el-button @click="handleDelete(scope.$index, scope.row)" :plain="true" type="danger" size="small">删除</el-button>
-										</template>
-									</el-table-column>
-								</el-table>
-							</el-col>
-						</el-collapse-item>
-						<el-collapse-item title="132.121.92.166" name="2">
-							<el-col :span="18" class="project-content">
-								<p>作用：广东ITSM应用域</p>
-								<p>配置：centos 6.2</p>
-							</el-col>
-							<el-col :span="6" style="text-align: right;">
-								<el-button size="small" data-cur-project="166" @click="handleAdd">新增</el-button>
-							</el-col>
-						</el-collapse-item>
-					</el-collapse>
-				</el-col>
-			</el-row>
-		</main>
-		<el-dialog title="添加账号" :visible.sync="showAddDialog" @close="handleFlagInit" top="10%">
+		<el-row type="flex" class="page-header">
+			<span class="header-text">
+				<i class="el-icon-menu"></i> 项目一览 > {{pname}}
+			</span>
+		</el-row>
+		<el-row>
+			<el-col :span="24">
+				<el-collapse v-model="activeNames" @change="handleChange">
+					<el-collapse-item title="132.121.92.165" name="1">
+						<el-col :span="18" class="project-content">
+							<p>作用：广东ITSM负载均衡域</p>
+							<p>配置：centos 6.2</p>
+						</el-col>
+						<el-col :span="6" style="text-align: right;">
+							<el-button size="small" data-cur-project="165" @click="handleNew($event)">新增</el-button>
+						</el-col>
+						<el-col :span="24" class="account-table">
+							<el-table :data="tableData">
+								<el-table-column type="expand">
+									<template scope="props">
+										<el-form label-position="left" inline class="table-expand">
+											<el-form-item :label="item.label" v-for="item in json2obj(props.row.desc)">
+												<span>{{item.text}}</span>
+											</el-form-item>
+										</el-form>
+									</template>
+								</el-table-column>
+								<el-table-column prop="account" label="账号">
+								</el-table-column>
+								<el-table-column prop="tag" label="标签" :filters="[{ text: '主应用', value: '主应用' }, { text: '数据库', value: '数据库' },{ text: '接口', value: '接口' },{ text: '进程', value: '进程' }]" :filter-method="filterTag" filter-placement="bottom-end">
+									<template scope="scope">
+										<el-tag :type="scope.row.tag === 'ITSM' ? 'primary' : 'success'" close-transition>{{scope.row.tag}}</el-tag>
+									</template>
+								</el-table-column>
+								<el-table-column label="操作">
+									<template scope="scope">
+										<el-button @click="handleView(scope.$index, scope.row)" size="small">查看密码</el-button>
+										<el-button @click="handleEdit(scope.$index, scope.row)" size="small">修改</el-button>
+										<el-button @click="handleDelete(scope.$index, scope.row)" :plain="true" type="danger" size="small">删除</el-button>
+									</template>
+								</el-table-column>
+							</el-table>
+						</el-col>
+					</el-collapse-item>
+					<el-collapse-item title="132.121.92.166" name="2">
+						<el-col :span="18" class="project-content">
+							<p>作用：广东ITSM应用域</p>
+							<p>配置：centos 6.2</p>
+						</el-col>
+						<el-col :span="6" style="text-align: right;">
+							<el-button size="small" data-cur-project="166" @click="handleNew">新增</el-button>
+						</el-col>
+					</el-collapse-item>
+				</el-collapse>
+			</el-col>
+		</el-row>
+		<el-dialog title="添加账号" :visible.sync="showNewDialog" @close="handleFlagInit" top="10%">
 			<el-form :model="form">
 				<el-form-item label="账号" :label-width="formLabelWidth">
 					<el-input v-model="form.account" auto-complete="off"></el-input>
@@ -73,12 +74,29 @@
 					</el-select>
 				</el-form-item>
 				<el-form-item label="说明" :label-width="formLabelWidth">
-					<el-input type="textarea" v-model="form.desc" :autosize="{ minRows: 4, maxRows: 4}"></el-input>
+					<el-table :data="form.desc" style="width: 100%" class="inner-desc">
+						<el-table-column label="标签">
+							<template scope="scope">
+								<el-input size="small" v-model="scope.row.label"></el-input>
+							</template>
+						</el-table-column>
+						<el-table-column label="值">
+							<template scope="scope">
+								<el-input size="small" v-model="scope.row.text"></el-input>
+							</template>
+						</el-table-column>
+						<el-table-column label="" width="30px">
+							<template scope="scope">
+								<el-button @click="removeNewDesc(scope.row)" size="small" type="text" icon="close"></el-button>
+							</template>
+						</el-table-column>
+					</el-table>
+					<el-button @click="addNewDesc" size="small" icon="plus">新增标签</el-button>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button @click="showAddDialog = false">取消</el-button>
-				<el-button type="primary" @click="submitAdd">确定</el-button>
+				<el-button @click="showNewDialog = false">取消</el-button>
+				<el-button type="primary" @click="submitNew">确定</el-button>
 			</div>
 		</el-dialog>
 		<el-dialog title="编辑账号" :visible.sync="showEditDialog" @close="handleFlagInit" top="2%">
@@ -129,7 +147,7 @@
 				<el-button type="primary" @click="submitEdit">确定</el-button>
 			</div>
 		</el-dialog>
-		<el-dialog title="查看密码" :visible.sync="showViewDialog" @close="handleFlagInit" :close-on-click-modal=false>
+		<el-dialog title="查看密码" :visible.sync="showViewDialog" @close="handleFlagInit">
 			<el-form :model="viewform">
 				<el-form-item label="账号" :label-width="formLabelWidth">
 					<p>{{viewform.account}}</p>
@@ -205,7 +223,7 @@
 					showPass: false
 				},
 				formLabelWidth: '100px',
-				showAddDialog: false,
+				showNewDialog: false,
 				showEditDialog: false,
 				showViewDialog: false,
 				canVerify: true,
@@ -229,10 +247,10 @@
 			handleChange() {
 
 			},
-			handleAdd(event) {
-				this.showAddDialog = true
+			handleNew(event) {
+				this.showNewDialog = true
 				this.curProject = event.currentTarget.dataset.curProject
-				this.action = 'add'
+				this.action = 'New'
 			},
 			handleView(index, row) {
 				this.showViewDialog = true
@@ -305,8 +323,8 @@
 					showPass: false
 				}
 			},
-			submitAdd() {
-				this.showAddDialog = false
+			submitNew() {
+				this.showNewDialog = false
 			},
 			submitEdit() {
 				this.showEditDialog = false
@@ -329,6 +347,18 @@
 				var index = this.editform.desc.indexOf(row)
 				if(index !== -1) {
 					this.editform.desc.splice(index, 1)
+				}
+			},
+			addNewDesc() {
+				this.form.desc.push({
+					label: '',
+					text: ''
+				})
+			},
+			removeNewDesc(row) {
+				var index = this.form.desc.indexOf(row)
+				if(index !== -1) {
+					this.form.desc.splice(index, 1)
 				}
 			}
 		}

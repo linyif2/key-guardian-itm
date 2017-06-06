@@ -1,8 +1,13 @@
 <template>
 	<div>
+		<el-row type="flex" class="page-header">
+			<span class="header-text">
+				<i class="el-icon-setting"></i> 角色配置
+			</span>
+		</el-row>
 		<el-row>
-			<el-col :span="6" class="role-list">
-				<h4>角色列表 <el-button type="primary" size="mini" icon="plus"></el-button></h4>
+			<el-col :span="7" class="role-list">
+				<h4>角色列表 <el-button type="" size="small" icon="plus">新增</el-button></h4>
 				<ul>
 					<li data-rid="1" :class="{active:roleActive=='1'}" @click="selectRole($event)">超级管理员</li>
 					<li data-rid="2" :class="{active:roleActive=='2'}" @click="selectRole($event)">项目负责人</li>
@@ -11,23 +16,24 @@
 					<li data-rid="5" :class="{active:roleActive=='5'}" @click="selectRole($event)">游客</li>
 				</ul>
 			</el-col>
-			<el-col :span="13" class="menu-tree">
+			<el-col :span="10" class="menu-tree">
 				<h4>菜单树</h4>
 				<el-tree :data="data2" show-checkbox node-key="id" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
 				</el-tree>
 			</el-col>
-			<el-col :span="5" class="auth-list">
+			<el-col :span="7" class="auth-list">
 				<h4>权限列表</h4>
 				<el-checkbox-group v-model="checkList">
 					<h5>项目管理</h5>
-					<el-checkbox label="编辑账号"></el-checkbox>
-					<el-checkbox label="查看密码"></el-checkbox>
+					<el-checkbox label="账号新增/修改"></el-checkbox>
+					<el-checkbox label="账号删除"></el-checkbox>
+					<el-checkbox label="密码查看"></el-checkbox>
 					<h5>菜单管理</h5>
-					<el-checkbox label="编辑菜单"></el-checkbox>
+					<el-checkbox label="菜单编辑"></el-checkbox>
 					<h5>角色管理</h5>
-					<el-checkbox label="编辑角色"></el-checkbox>
-					<h5>人员管理</h5>
-					<el-checkbox label="编辑人员"></el-checkbox>
+					<el-checkbox label="角色编辑"></el-checkbox>
+					<h5>用户管理</h5>
+					<el-checkbox label="用户信息编辑"></el-checkbox>
 				</el-checkbox-group>
 			</el-col>
 		</el-row>
@@ -96,23 +102,25 @@
 	}
 	
 	h4 {
-		padding: 10px;
+		padding: 5px 10px;
 		margin: 0;
 		background-color: #eef1f6;
 		color: #48576a;
-		height: 21px;
 		border-bottom: 1px solid #d1dbe5;
+		line-height: 28px;
 	}
-	h4 button{
+	
+	h4 button {
 		float: right;
 	}
+	
 	.role-list {
 		border: 1px solid #d1dbe5;
 		border-right: 0;
 	}
 	
 	.role-list ul {
-		height: 500px;
+		height: 490px;
 		overflow-y: auto;
 		padding: 0 10px;
 		margin: 0;
@@ -142,7 +150,7 @@
 	}
 	
 	.menu-tree .el-tree {
-		height: 500px;
+		height: 490px;
 		border: 0;
 	}
 	

@@ -1,5 +1,10 @@
 <template>
 	<div class="project-main">
+		<el-row type="flex" class="page-header">
+			<span class="header-text">
+				<i class="el-icon-menu"></i> 项目一览
+			</span>
+		</el-row>
 		<el-table :data="tableData" border style="width: 100%" highlight-current-row @row-click="handleCurrentChange">
 			<el-table-column prop="name" label="名称" width="200">
 			</el-table-column>
