@@ -156,7 +156,7 @@
 	
 	.auth-list .el-checkbox-group {
 		padding: 0 10px;
-		height: 500px;
+		height: 490px;
 		overflow-y: auto;
 	}
 	

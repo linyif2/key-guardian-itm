@@ -16,16 +16,23 @@
 							</el-col>
 							<el-col :span="24" class="account-table">
 								<el-table :data="tableData">
-									<el-table-column prop="account" label="账号" width="150">
+									<el-table-column type="expand">
+										<template scope="props">
+											<el-form label-position="left" inline class="table-expand">
+												<el-form-item :label="item.label" v-for="item in json2obj(props.row.desc)">
+													<span>{{item.text}}</span>
+												</el-form-item>
+											</el-form>
+										</template>
 									</el-table-column>
-									<el-table-column prop="desc" label="说明">
+									<el-table-column prop="account" label="账号">
 									</el-table-column>
-									<el-table-column prop="tag" label="标签" width="100" :filters="[{ text: '主应用', value: '主应用' }, { text: '数据库', value: '数据库' },{ text: '接口', value: '接口' },{ text: '进程', value: '进程' }]" :filter-method="filterTag" filter-placement="bottom-end">
+									<el-table-column prop="tag" label="标签" :filters="[{ text: '主应用', value: '主应用' }, { text: '数据库', value: '数据库' },{ text: '接口', value: '接口' },{ text: '进程', value: '进程' }]" :filter-method="filterTag" filter-placement="bottom-end">
 										<template scope="scope">
 											<el-tag :type="scope.row.tag === 'ITSM' ? 'primary' : 'success'" close-transition>{{scope.row.tag}}</el-tag>
 										</template>
 									</el-table-column>
-									<el-table-column label="操作" width="250">
+									<el-table-column label="操作">
 										<template scope="scope">
 											<el-button @click="handleView(scope.$index, scope.row)" size="small">查看密码</el-button>
 											<el-button @click="handleEdit(scope.$index, scope.row)" size="small">修改</el-button>
@@ -97,7 +104,24 @@
 					</el-select>
 				</el-form-item>
 				<el-form-item label="说明" :label-width="formLabelWidth">
-					<el-input type="textarea" v-model="editform.desc" :autosize="{ minRows: 4, maxRows: 4}"></el-input>
+					<el-table :data="editform.desc" style="width: 100%" class="inner-desc">
+						<el-table-column label="标签">
+							<template scope="scope">
+								<el-input size="small" v-model="scope.row.label"></el-input>
+							</template>
+						</el-table-column>
+						<el-table-column label="值">
+							<template scope="scope">
+								<el-input size="small" v-model="scope.row.text"></el-input>
+							</template>
+						</el-table-column>
+						<el-table-column label="" width="30px">
+							<template scope="scope">
+								<el-button @click="removeEditDesc(scope.row)" size="small" type="text" icon="close"></el-button>
+							</template>
+						</el-table-column>
+					</el-table>
+					<el-button @click="addEditDesc" size="small" icon="plus">新增标签</el-button>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -120,7 +144,6 @@
 					<el-button v-if="!viewform.showPass" type="primary" @click="confirmDecryptPass">确定</el-button>
 				</el-form-item>
 			</el-form>
-
 		</el-dialog>
 	</div>
 
@@ -137,25 +160,25 @@
 				tableData: [{
 					account: 'itsm',
 					pass: 'itsm8392',
-					desc: '普通账号',
+					desc: '[{"label":"部署地址","text":"/abaw"},{"label":"注意事项","text":"重启需申请停机"},{"label":"中间件","text":"tomcat"}]',
 					tag: '主应用',
 					project: '165'
 				}, {
 					account: 'root',
 					pass: 'root123',
-					desc: '超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号超级账号',
+					desc: '[{"label":"部署地址","text":"/abc/eee/d1r/aw"},{"label":"部署策略","text":"负载均衡"},{"label":"中间件","text":"weblogic"}]',
 					tag: '数据库',
 					project: '165'
 				}, {
 					account: 'test',
 					pass: 'test091',
-					desc: '测试账号',
+					desc: '[{"label":"部署地址","text":"/abc/eee/d1r/aw"}]',
 					tag: '主应用',
 					project: '165'
 				}, {
 					account: 'mini',
 					pass: 'mini12094',
-					desc: '迷你账号',
+					desc: '[{"label":"别名","text":"MINI Delta"}]',
 					tag: '接口',
 					project: '165'
 				}],
@@ -164,7 +187,7 @@
 					newpass: '',
 					newpass2: '',
 					tag: '',
-					desc: ''
+					desc: []
 				},
 				editform: {
 					account: '',
@@ -173,7 +196,7 @@
 					newpass: '',
 					newpass2: '',
 					tag: '',
-					desc: ''
+					desc: []
 				},
 				viewform: {
 					account: '',
@@ -229,7 +252,7 @@
 				this.editform.account = row.account
 				this.editform.pass = row.pass
 				this.editform.tag = row.tag
-				this.editform.desc = row.desc
+				this.editform.desc = this.json2obj(row.desc)
 			},
 			handleDelete(index, row) {
 				this.curAccount = row.account
@@ -265,7 +288,7 @@
 					newpass: '',
 					newpass2: '',
 					tag: '',
-					desc: ''
+					desc: []
 				}
 				this.editform = {
 					account: '',
@@ -273,7 +296,7 @@
 					newpass: '',
 					newpass2: '',
 					tag: '',
-					desc: ''
+					desc: []
 				}
 				this.viewform = {
 					account: '',
@@ -282,28 +305,68 @@
 					showPass: false
 				}
 			},
-			submitAdd(){
+			submitAdd() {
 				this.showAddDialog = false
 			},
-			submitEdit(){
+			submitEdit() {
 				this.showEditDialog = false
 			},
 			confirmDecryptPass() {
 				console.log(this.viewform)
 				//判断用户decryptPass
 				this.viewform.showPass = true
+			},
+			json2obj(str) {
+				return JSON.parse(str);
+			},
+			addEditDesc() {
+				this.editform.desc.push({
+					label: '',
+					text: ''
+				})
+			},
+			removeEditDesc(row) {
+				var index = this.editform.desc.indexOf(row)
+				if(index !== -1) {
+					this.editform.desc.splice(index, 1)
+				}
 			}
 		}
 	}
 </script>
-<style scoped>
+<style>
 	.account-table,
 	.project-content {
 		margin-bottom: 10px;
 	}
 	
-	p {
+	.project-content p,
+	.el-dialog p {
 		margin: 0;
 		padding: 0;
+	}
+	
+	.table-expand {
+		font-size: 0;
+	}
+	
+	.table-expand label {
+		width: 90px;
+		color: #99a9bf;
+	}
+	
+	.table-expand .el-form-item {
+		margin-right: 0;
+		margin-bottom: 0;
+		width: 50%;
+	}
+	
+	.inner-desc .cell {
+		padding: 0;
+	}
+	
+	.inner-desc td {
+		height: auto;
+		text-align: center;
 	}
 </style>
