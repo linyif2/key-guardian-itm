@@ -28,6 +28,14 @@
 	import { USER_SIGNIN } from '../store/user'
 	export default {
 		name: 'login',
+		mounted() {
+			let _this = this
+			document.addEventListener('keyup', function(e) {
+				if(e.keyCode == 13) {
+					_this.submitForm('loginForm')
+				}
+			})
+		},
 		data() {
 			var checkAccount = (rule, value, callback) => {
 				if(!value) {

@@ -120,7 +120,7 @@
 	}
 	
 	.role-list ul {
-		height: 490px;
+		height: 450px;
 		overflow-y: auto;
 		padding: 0 10px;
 		margin: 0;
@@ -150,7 +150,7 @@
 	}
 	
 	.menu-tree .el-tree {
-		height: 490px;
+		height: 450px;
 		border: 0;
 	}
 	
@@ -164,7 +164,7 @@
 	
 	.auth-list .el-checkbox-group {
 		padding: 0 10px;
-		height: 490px;
+		height: 450px;
 		overflow-y: auto;
 	}
 	

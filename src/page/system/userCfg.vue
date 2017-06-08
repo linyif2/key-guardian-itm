@@ -78,6 +78,20 @@
 								<el-checkbox label="CMDB项目开发"></el-checkbox>
 							</div><div>
 								<el-checkbox label="CMDB项目开发"></el-checkbox>
+							</div><div>
+								<el-checkbox label="CMDB项目开发"></el-checkbox>
+							</div><div>
+								<el-checkbox label="CMDB项目开发"></el-checkbox>
+							</div><div>
+								<el-checkbox label="CMDB项目开发"></el-checkbox>
+							</div><div>
+								<el-checkbox label="CMDB项目开发"></el-checkbox>
+							</div><div>
+								<el-checkbox label="CMDB项目开发"></el-checkbox>
+							</div><div>
+								<el-checkbox label="CMDB项目开发"></el-checkbox>
+							</div><div>
+								<el-checkbox label="CMDB项目开发"></el-checkbox>
 							</div>
 						</el-checkbox-group>
 
@@ -192,6 +206,7 @@
 	
 	.user-role {
 		padding-left: 30px;
-		max-height: 300px;
+		max-height: 320px;
+		overflow-y: auto;
 	}
 </style>
