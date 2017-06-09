@@ -21,7 +21,7 @@
 								<el-table-column type="expand">
 									<template scope="props">
 										<el-form label-position="left" inline class="table-expand">
-											<el-form-item :label="item.label" v-for="item in json2obj(props.row.desc)">
+											<el-form-item :label="item.label" v-for="item in json2obj(props.row.desc)" :key="item.label">
 												<span>{{item.text}}</span>
 											</el-form-item>
 										</el-form>
