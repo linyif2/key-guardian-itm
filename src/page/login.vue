@@ -83,7 +83,7 @@
 							token: _this.loginForm.token
 						})
 						_this.$router.replace({
-							path: '/main/project'
+							path: '/project'
 						})
 					} else {
 						console.log('error submit');

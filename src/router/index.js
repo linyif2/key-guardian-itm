@@ -15,10 +15,9 @@ export default new Router({
 				component: resolve => require(['@/page/login'], resolve)
 			},
 			{
-				path: '/main',
+				path: '/',
 				component: resolve => require(['@/page/main'], resolve),
 				meta: {
-					// 添加该字段，表示进入这个路由是需要登录的
 					requireAuth: true,
 				},
 				children: [{

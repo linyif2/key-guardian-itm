@@ -8,9 +8,9 @@
 		<el-table :data="tableData" border style="width: 100%" highlight-current-row @row-click="handleCurrentChange">
 			<el-table-column prop="name" label="名称" width="200">
 			</el-table-column>
-			<el-table-column prop="tag" label="标签" width="100" :filters="[{ text: 'ITSM', value: 'ITSM' }, { text: 'ITMP', value: 'ITMP' }, { text: '公共', value: '公共' }]" :filter-method="filterTag" filter-placement="bottom-end">
+			<el-table-column prop="tag" label="标签" width="200" :filters="filterTagOptions" :filter-method="filterByTag" filter-placement="bottom-end">
 				<template scope="scope">
-					<el-tag :type="scope.row.tag === 'ITSM' ? 'primary' : 'success'" close-transition>{{scope.row.tag}}</el-tag>
+					<el-tag v-for="(item,index) in scope.row.tag" :type="tagsType[index%3]" close-transition>{{item}}</el-tag>
 				</template>
 			</el-table-column>
 			<el-table-column prop="desc" label="说明">
@@ -24,52 +24,66 @@
 		name: 'project',
 		data() {
 			return {
+				tagsType: ['primary', 'success', 'warning'],
+				filterTagOptions: [{
+					text: 'mini',
+					value: 'mini'
+				}, {
+					text: 'ITSM',
+					value: 'ITSM'
+				}, {
+					text: 'ITMP',
+					value: 'ITMP'
+				}, {
+					text: '公共',
+					value: '公共'
+				}],
 				tableData: [{
 					id: '111',
 					name: '广东ITSM',
 					desc: '略',
-					tag: 'ITSM'
+					tag: ['ITSM', 'mini', 'e', 'ff']
 				}, {
 					id: '112',
 					name: '吉林ITSM',
 					desc: '略',
-					tag: 'ITSM'
+					tag: ['ii']
 				}, {
 					id: '113',
 					name: '北京ITSM',
 					desc: '略',
-					tag: 'ITSM'
+					tag: ['ITSM']
 				}, {
 					id: '114',
 					name: '集团电渠',
 					desc: '略',
-					tag: 'ITSM'
+					tag: ['ITSM']
 				}, {
 					id: '115',
 					name: '审计平台',
 					desc: '略',
-					tag: '公共'
+					tag: ['公共']
 				}, {
 					id: '116',
 					name: '内部项目',
 					desc: '略',
-					tag: '公共'
+					tag: ['公共']
 				}, {
 					id: '117',
 					name: 'IT监控系统',
 					desc: '略',
-					tag: 'ITMP'
+					tag: ['ITMP']
 				}, {
 					id: '118',
 					name: 'CMDB',
 					desc: '略',
-					tag: 'CMDB'
+					tag: ['CMDB']
 				}]
 			}
 		},
 		methods: {
-			filterTag(value, row) {
-				return row.tag === value;
+			filterByTag(value, row) {
+				return row.tag.indexOf(value) >= 0;
 			},
 			handleCurrentChange(val) {
 				console.log(val.name + "-" + val.id);
@@ -85,6 +99,8 @@
 	}
 </script>
 
-<style>
-
+<style scoped>
+	.el-tag {
+		margin: 2px;
+	}
 </style>

@@ -17,14 +17,13 @@
 				<h4>信息<el-button size="small" class="right" :style="{ visibility: showMenuForm!=''?'visible':'hidden'}">编辑</el-button></h4>
 				<div class="menu-info-content">
 					<div :style="{ visibility: showMenuForm!=''?'visible':'hidden'}">
-
 						<el-form label-position="left" label-width="60px" :model="menuForm">
 							<el-form-item label="名称">
 								<span>{{menuForm.name}}</span>
 							</el-form-item>
 							<el-form-item label="标签">
 								<span v-for="(tag, index) in menuForm.tags">
-									<el-tag class="menu-form-tag" :type="tagsType[index%5]">{{tag}}</el-tag>
+									<el-tag class="menu-form-tag" :type="tagsType[index%3]">{{tag}}</el-tag>
 								</span>
 							</el-form-item>
 							<el-form-item label="URL">
@@ -95,7 +94,7 @@
 			return {
 				showMenuForm: 'testing',
 				filterText: '',
-				tagsType: ['', 'gray', 'primary', 'success', 'warning'],
+				tagsType: ['primary', 'success', 'warning'],
 				menuForm: {
 					name: '菜单1',
 					url: '/aofwejio.faw.ewfe/fawe',

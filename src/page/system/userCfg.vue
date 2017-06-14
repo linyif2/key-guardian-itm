@@ -58,40 +58,6 @@
 							</div>
 							<div>
 								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
-							</div><div>
-								<el-checkbox label="CMDB项目开发"></el-checkbox>
 							</div>
 						</el-checkbox-group>
 
@@ -154,7 +120,7 @@
 		methods: {
 			addUser() {
 				this.showUserInfoDialog = true
-				this.editForm.status='enable'
+				this.editForm.status = 'enable'
 			},
 			editUser(row) {
 				this.showUserInfoDialog = true
@@ -202,10 +168,9 @@
 </script>
 
 <style scoped>
-	
-	
 	.user-role {
 		padding-left: 30px;
+		min-height: 320px;
 		max-height: 320px;
 		overflow-y: auto;
 	}
