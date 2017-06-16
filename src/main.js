@@ -6,6 +6,7 @@ import 'element-ui/lib/theme-default/index.css'
 import App from './App'
 import routes from './router'
 import store from './store'
+
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 const router = routes

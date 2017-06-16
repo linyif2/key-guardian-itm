@@ -27,9 +27,9 @@
 										</el-form>
 									</template>
 								</el-table-column>
-								<el-table-column prop="account" label="账号">
+								<el-table-column prop="account" label="账号" width="200px">
 								</el-table-column>
-								<el-table-column prop="tag" label="标签" :filters="[{ text: '主应用', value: '主应用' }, { text: '数据库', value: '数据库' },{ text: '接口', value: '接口' },{ text: '进程', value: '进程' }]" :filter-method="filterTag" filter-placement="bottom-end">
+								<el-table-column prop="tag" label="标签" width="150px" :filters="[{ text: '主应用', value: '主应用' }, { text: '数据库', value: '数据库' },{ text: '接口', value: '接口' },{ text: '进程', value: '进程' }]" :filter-method="filterTag" filter-placement="bottom-end">
 									<template scope="scope">
 										<el-tag :type="scope.row.tag === 'ITSM' ? 'primary' : 'success'" close-transition>{{scope.row.tag}}</el-tag>
 									</template>
@@ -394,9 +394,25 @@
 	.inner-desc .cell {
 		padding: 0;
 	}
-	
+	.inner-desc th .cell {
+		padding: 0 10px;
+	}
 	.inner-desc td {
 		height: auto;
 		text-align: center;
+	}
+	.el-collapse{
+		border-color: rgba(32,160,255,.5);
+	}
+	.el-collapse-item{
+		border-color: rgba(32,160,255,.5);
+	}
+	.el-collapse-item__header{
+		color: #1D8CE0;
+		border-color: rgba(32,160,255,.5);
+		background-color: rgba(32,160,255,.1);
+	}
+	.el-collapse-item__wrap{
+		border-bottom-color: rgba(32,160,255,.5);
 	}
 </style>
