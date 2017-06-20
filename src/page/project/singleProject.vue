@@ -401,18 +401,4 @@
 		height: auto;
 		text-align: center;
 	}
-	.el-collapse{
-		border-color: rgba(32,160,255,.5);
-	}
-	.el-collapse-item{
-		border-color: rgba(32,160,255,.5);
-	}
-	.el-collapse-item__header{
-		color: #1D8CE0;
-		border-color: rgba(32,160,255,.5);
-		background-color: rgba(32,160,255,.1);
-	}
-	.el-collapse-item__wrap{
-		border-bottom-color: rgba(32,160,255,.5);
-	}
 </style>

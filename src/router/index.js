@@ -30,10 +30,6 @@ export default new Router({
 						component: resolve => require(['@/page/project/singleProject'], resolve)
 					},
 					{
-						path: 'system',
-						component: resolve => require(['@/page/system/system'], resolve)
-					},
-					{
 						path: 'system/menuCfg',
 						component: resolve => require(['@/page/system/menuCfg'], resolve)
 					},
