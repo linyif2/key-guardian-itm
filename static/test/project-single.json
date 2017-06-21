@@ -1,0 +1,78 @@
+{
+    "pid": "134",
+    "pname": "测试用例",
+    "content": [
+        {
+            "id": "1111",
+            "name": "132.121.92.165",
+            "desc": "作用：广东ITSM进程配置：centos 6.2",
+            "accountList": [
+                {
+                    "account": "itsm",
+                    "pass": "itsm8392",
+                    "desc": "[{\"label\":\"部署地址\",\"text\":\"/abaw\"},{\"label\":\"注意事项\",\"text\":\"重启需申请停机\"},{\"label\":\"中间件\",\"text\":\"tomcat\"}]",
+                    "tag": [
+                        "进程"
+                    ],
+                    "project": "1111"
+                },
+                {
+                    "account": "root",
+                    "pass": "root123",
+                    "desc": "[{ \"label\":\"部署地址\",\"text\":\"/abc/eee/d1r/aw\"},{\"label\":\"部署策略\",\"text\":\"负载均衡\"},{\"label\":\"中间件\",\"text\":\"weblogic\"}]",
+                    "tag": [
+                        "数据库"
+                    ],
+                    "project": "1111"
+                }
+            ]
+        },
+        {
+            "id": "2222",
+            "name": "132.121.92.166",
+            "desc": "作用：广东ITSM负载均衡域 配置：centos 6.2 ",
+            "accountList": [
+                {
+                    "account": "itsm",
+                    "pass": "itsm8392",
+                    "desc": "[{\"label\":\"部署地址\",\"text\":\"/abaw\"},{\"label\":\"注意事项\",\"text\":\"重启需申请停机\"},{\"label\":\"中间件\",\"text\":\"tomcat\"}]",
+                    "tag": [
+                        "主应用"
+                    ],
+                    "project": "2222"
+                },
+                {
+                    "account": "root",
+                    "pass": "root123",
+                    "desc": "[{\"label\":\"部署地址\",\"text\":\"/abc/eee/d1r/aw\"},{\"label\":\"部署策略\",\"text\":\"负载均衡\"},{\"label\":\"中间件\",\"text\":\"weblogic\"}]",
+                    "tag": [
+                        "数据库"
+                    ],
+                    "project": "2222"
+                }
+            ]
+        },
+        {
+            "id": "3333",
+            "name": "132.121.92.167",
+            "desc": "作用：广东ITSM省内接口 配置：centos 6.2 ",
+            "accountList": []
+        },
+        {
+            "id": "4444",
+            "name": "132.121.91.219",
+            "desc": "作用：广东ITSM负载均衡域8001 8002 配置：centos 6.2 ",
+            "accountList": [
+                {
+                    "account": "itsm",
+                    "pass": "itsm8392",
+                    "desc": "[{\"label\":\"部署地址\",\"text\":\"/abc/eee/d1r/aw\"},{\"label\":\"部署策略\",\"text\":\"负载均衡\"},{\"label\":\"中间件\",\"text\":\"weblogic\"}]",
+                    "tag": [
+                        "主应用"
+                    ],
+                    "project": "4444"
+                }
+            ]
+        }
+    ]
+}

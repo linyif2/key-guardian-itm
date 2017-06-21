@@ -7,17 +7,16 @@
 		</el-row>
 		<el-row>
 			<el-col :span="24">
-				<el-collapse v-model="activeNames" @change="handleChange">
-					<el-collapse-item title="132.121.92.165" name="1">
+				<el-collapse v-model="activeNames" @change="handleChange" v-for="project in pageContent" :key="project.id">
+					<el-collapse-item :title="project.name" :name="project.id">
 						<el-col :span="18" class="project-content">
-							<p>作用：广东ITSM负载均衡域</p>
-							<p>配置：centos 6.2</p>
+							<p>{{project.desc}}</p>
 						</el-col>
 						<el-col :span="6" style="text-align: right;">
-							<el-button size="small" data-cur-project="165" @click="handleNew($event)">新增</el-button>
+							<el-button size="small" :data-cur-project="project.id" @click="handleNew($event)">新增</el-button>
 						</el-col>
 						<el-col :span="24" class="account-table">
-							<el-table :data="tableData">
+							<el-table :data="project.accountList" v-if="project.accountList.length>0">
 								<el-table-column type="expand">
 									<template scope="props">
 										<el-form label-position="left" inline class="table-expand">
@@ -29,9 +28,9 @@
 								</el-table-column>
 								<el-table-column prop="account" label="账号" width="200px">
 								</el-table-column>
-								<el-table-column prop="tag" label="标签" width="150px" :filters="[{ text: '主应用', value: '主应用' }, { text: '数据库', value: '数据库' },{ text: '接口', value: '接口' },{ text: '进程', value: '进程' }]" :filter-method="filterTag" filter-placement="bottom-end">
+								<el-table-column prop="tag" label="标签" width="200" :filters="filterTagOptions" :filter-method="filterByTag" filter-placement="bottom-end">
 									<template scope="scope">
-										<el-tag :type="scope.row.tag === 'ITSM' ? 'primary' : 'success'" close-transition>{{scope.row.tag}}</el-tag>
+										<el-tag v-for="(item,index) in scope.row.tag" :key="item.value" :type="tagsType[index%3]" close-transition>{{item}}</el-tag>
 									</template>
 								</el-table-column>
 								<el-table-column label="操作">
@@ -42,15 +41,6 @@
 									</template>
 								</el-table-column>
 							</el-table>
-						</el-col>
-					</el-collapse-item>
-					<el-collapse-item title="132.121.92.166" name="2">
-						<el-col :span="18" class="project-content">
-							<p>作用：广东ITSM应用域</p>
-							<p>配置：centos 6.2</p>
-						</el-col>
-						<el-col :span="6" style="text-align: right;">
-							<el-button size="small" data-cur-project="166" @click="handleNew">新增</el-button>
 						</el-col>
 					</el-collapse-item>
 				</el-collapse>
@@ -69,8 +59,7 @@
 				</el-form-item>
 				<el-form-item label="标签" :label-width="formLabelWidth">
 					<el-select v-model="form.tag" placeholder="选择标签">
-						<el-option label="数据库" value="应用"></el-option>
-						<el-option label="应用" value="数据库"></el-option>
+						<el-option :label="o.text" :value="o.value" v-for="o in filterTagOptions" :key="o.value"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="说明" :label-width="formLabelWidth">
@@ -115,10 +104,7 @@
 				</el-form-item>
 				<el-form-item label="标签" :label-width="formLabelWidth">
 					<el-select v-model="editform.tag" placeholder="选择标签">
-						<el-option label="数据库" value="数据库"></el-option>
-						<el-option label="进程" value="进程"></el-option>
-						<el-option label="接口" value="接口"></el-option>
-						<el-option label="主应用" value="主应用"></el-option>
+						<el-option :label="o.text" :value="o.value" v-for="o in filterTagOptions" :key="o.value"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="说明" :label-width="formLabelWidth">
@@ -168,38 +154,15 @@
 </template>
 
 <script>
+	import projectService from '../../api/projectService'
 	export default {
 		name: 'singleProject',
 		data() {
 			return {
 				pid: null,
 				pname: null,
-				activeNames: ['1'],
-				tableData: [{
-					account: 'itsm',
-					pass: 'itsm8392',
-					desc: '[{"label":"部署地址","text":"/abaw"},{"label":"注意事项","text":"重启需申请停机"},{"label":"中间件","text":"tomcat"}]',
-					tag: '主应用',
-					project: '165'
-				}, {
-					account: 'root',
-					pass: 'root123',
-					desc: '[{"label":"部署地址","text":"/abc/eee/d1r/aw"},{"label":"部署策略","text":"负载均衡"},{"label":"中间件","text":"weblogic"}]',
-					tag: '数据库',
-					project: '165'
-				}, {
-					account: 'test',
-					pass: 'test091',
-					desc: '[{"label":"部署地址","text":"/abc/eee/d1r/aw"}]',
-					tag: '主应用',
-					project: '165'
-				}, {
-					account: 'mini',
-					pass: 'mini12094',
-					desc: '[{"label":"别名","text":"MINI Delta"}]',
-					tag: '接口',
-					project: '165'
-				}],
+				pageContent: [],
+				activeNames: [],
 				form: {
 					account: '',
 					newpass: '',
@@ -230,7 +193,25 @@
 				verifyInterval: 60,
 				curProject: null,
 				curAccount: null,
-				action: null
+				action: null,
+				tagsType: ['primary', 'success', 'warning'],
+				filterTagOptions: [{
+						"text": "数据库",
+						"value": "数据库"
+					},
+					{
+						"text": "主应用",
+						"value": "主应用"
+					},
+					{
+						"text": "接口",
+						"value": "接口"
+					},
+					{
+						"text": "进程",
+						"value": "进程"
+					}
+				]
 			}
 		},
 		created() {
@@ -239,10 +220,15 @@
 		methods: {
 			fetchData() {
 				this.pid = this.$route.params.pid
-				this.pname = this.$route.params.pname
+
+				projectService.getProject(this.pid).then(resp => {
+					let pData = resp.data
+					this.pname = pData.pname
+					this.pageContent = pData.content
+				});
 			},
-			filterTag(value, row) {
-				return row.tag === value;
+			filterByTag(value, row) {
+				return row.tag.indexOf(value) >= 0;
 			},
 			handleChange() {
 
@@ -394,9 +380,11 @@
 	.inner-desc .cell {
 		padding: 0;
 	}
+	
 	.inner-desc th .cell {
 		padding: 0 10px;
 	}
+	
 	.inner-desc td {
 		height: auto;
 		text-align: center;

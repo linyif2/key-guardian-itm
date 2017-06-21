@@ -12,7 +12,7 @@
 			</el-table-column>
 			<el-table-column prop="tag" label="标签" width="200" :filters="filterTagOptions" :filter-method="filterByTag" filter-placement="bottom-end">
 				<template scope="scope">
-					<el-tag v-for="(item,index) in scope.row.tag" :type="tagsType[index%3]" close-transition>{{item}}</el-tag>
+					<el-tag v-for="(item,index) in scope.row.tag" :key="item.value" :type="tagsType[index%3]" close-transition>{{item}}</el-tag>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -31,16 +31,19 @@
 			}
 		},
 		created() {
-			projectService.listProject().then(resp => {
-				//console.log(resp.data)
-				this.projectList = resp.data
-			});
-			projectService.listTagOptions().then(resp => {
-				//console.log(resp.data)
-				this.filterTagOptions = resp.data
-			});
+			this.fetchData()
 		},
 		methods: {
+			fetchData() {
+				projectService.listProject().then(resp => {
+					//console.log(resp.data)
+					this.projectList = resp.data
+				});
+				projectService.listTagOptions().then(resp => {
+					//console.log(resp.data)
+					this.filterTagOptions = resp.data
+				});
+			},
 			filterByTag(value, row) {
 				return row.tag.indexOf(value) >= 0;
 			},
@@ -49,8 +52,7 @@
 				this.$router.push({
 					name: 'singleProject',
 					params: {
-						pid: val.id,
-						pname: val.name
+						pid: val.id
 					}
 				});
 			}
