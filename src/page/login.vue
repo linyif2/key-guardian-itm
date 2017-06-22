@@ -3,7 +3,7 @@
 		<header class="header">
 			<el-row type="flex" class="login-bg" justify="center" align="middle">
 				<div class="login-frame">
-					<h3 style="text-align: center;">这是个神奇の系统</h3>
+					<h3 style="text-align: center;">（╯' o '）╯︵ ┻━┻ </h3>
 					<el-alert v-if="loginForm.error!=''" :title="loginForm.error" type="warning" show-icon :closable=false></el-alert>
 					<el-form :model="loginForm" ref="loginForm" :rules="validateRule">
 						<el-form-item label="账号" prop="account">
