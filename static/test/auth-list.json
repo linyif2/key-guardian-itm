@@ -1,0 +1,22 @@
+[
+    {
+        "text": "超管",
+        "value": "ROLE_0001"
+    },
+    {
+        "text": "倒三角项目管理",
+        "value": "ROLE_0002"
+    },
+    {
+        "text": "支点项目管理",
+        "value": "ROLE_0003"
+    },
+    {
+        "text": "CMDB项目开发",
+        "value": "ROLE_0004"
+    },
+    {
+        "text": "CMDB项目管理",
+        "value": "ROLE_0005"
+    }
+]
