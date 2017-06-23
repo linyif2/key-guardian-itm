@@ -7,7 +7,7 @@
 		</el-row>
 		<el-row>
 			<el-col :span="12" class="menu-tree">
-				<h4><el-input size="small" placeholder="输入关键字进行过滤" v-model="filterText">
+				<h4><el-input size="small" placeholder="输入关键字" v-model="filterText">
 				</el-input></h4>
 
 				<el-tree class="filter-tree" :data="data2" :props="defaultProps" default-expand-all :filter-node-method="filterNode" ref="tree2" :expand-on-click-node="false" :render-content="renderContent" @node-click="clickNode($event)">

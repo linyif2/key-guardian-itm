@@ -9,31 +9,36 @@
 			<el-col :span="7" class="role-list">
 				<h4>角色列表 <el-button type="" size="small" icon="plus">新增</el-button></h4>
 				<ul>
-					<li data-rid="1" :class="{active:roleActive=='1'}" @click="selectRole($event)">超级管理员</li>
-					<li data-rid="2" :class="{active:roleActive=='2'}" @click="selectRole($event)">项目负责人</li>
-					<li data-rid="3" :class="{active:roleActive=='3'}" @click="selectRole($event)">开发人员</li>
-					<li data-rid="4" :class="{active:roleActive=='4'}" @click="selectRole($event)">运维人员</li>
-					<li data-rid="5" :class="{active:roleActive=='5'}" @click="selectRole($event)">游客</li>
+					<div v-for="role in roleList" :key="role.id">
+						<li v-show="roleRename!=role.id" :class="{active:roleActive==role.id}" @click="selectRole(role)">{{role.name}}
+							<a type="text" class="func" @click="rename(role)">重命名</a>
+
+						</li>
+						<li v-show="roleRename==role.id" :class="{active:roleActive==role.id}" @click="selectRole(role)">
+							<el-input :id="roleRenameInputId(role.id)" v-model="role.name" placeholder="请输入内容" @blur="roleRename=''" size="small"></el-input>
+						</li>
+					</div>
+
 				</ul>
 			</el-col>
 			<el-col :span="10" class="menu-tree">
 				<h4>菜单树</h4>
-				<el-tree :data="data2" show-checkbox node-key="id" :default-expanded-keys="[2, 3]" :default-checked-keys="[5]" :props="defaultProps">
+				<el-tree :data="menuTree" show-checkbox node-key="id" :default-expanded-keys="[ 3]" :default-checked-keys="[5]" :props="defaultProps">
 				</el-tree>
 			</el-col>
 			<el-col :span="7" class="auth-list">
 				<h4>权限列表</h4>
 				<el-checkbox-group v-model="checkList">
 					<h5>项目管理</h5>
-					<el-checkbox label="账号新增/修改"></el-checkbox>
-					<el-checkbox label="账号删除"></el-checkbox>
-					<el-checkbox label="密码查看"></el-checkbox>
+					<el-checkbox label="AUTH_0001">账号新增/修改</el-checkbox>
+					<el-checkbox label="AUTH_0002">账号删除</el-checkbox>
+					<el-checkbox label="AUTH_0003">密码查看</el-checkbox>
 					<h5>菜单管理</h5>
-					<el-checkbox label="菜单编辑"></el-checkbox>
+					<el-checkbox label="AUTH_0004">菜单编辑</el-checkbox>
 					<h5>角色管理</h5>
-					<el-checkbox label="角色编辑"></el-checkbox>
+					<el-checkbox label="AUTH_0005">角色编辑</el-checkbox>
 					<h5>用户管理</h5>
-					<el-checkbox label="用户信息编辑"></el-checkbox>
+					<el-checkbox label="AUTH_0006">用户信息编辑</el-checkbox>
 				</el-checkbox-group>
 			</el-col>
 		</el-row>
@@ -41,13 +46,17 @@
 </template>
 
 <script>
+	import roleService from '../../api/roleService'
 	export default {
 		name: 'roleCfg',
 		data() {
 			return {
 				roleActive: '',
+				roleRename: '',
 				checkList: [],
-				data2: [{
+				roleList: [],
+				authList: [],
+				menuTree: [{
 					id: 1,
 					label: '一级 1',
 					children: [{
@@ -88,10 +97,37 @@
 				}
 			};
 		},
+		created() {
+			this.fetchData()
+		},
 		methods: {
-			selectRole(event) {
-				this.roleActive = event.currentTarget.dataset.rid
+			fetchData() {
+				roleService.listRole().then(resp => {
+					this.roleList = resp.data
+				});
+			},
+			selectRole(row) {
+				this.roleActive = row.id
+				this.checkList = row.auth
+			},
+			rename(row) {
+				var renameInput = document.getElementById("INPUT-" + row.id).getElementsByTagName("input")[0]
+				this.roleRename = row.id
+				setTimeout(function(e) {
+					renameInput.focus()
+				}, 250)
+			},
+			roleRenameInputId(id) {
+				return 'INPUT-' + id
 			}
+		},
+		mounted() {
+			let _this = this
+			document.addEventListener('keyup', function(e) {
+				if(e.keyCode == 13) {
+					_this.roleRename = ''
+				}
+			})
 		}
 	}
 </script>
@@ -131,11 +167,27 @@
 		line-height: 35px;
 		padding: 0 10px;
 		font-size: 15px;
+		display: flex;
+		align-items: center;
+	}
+	
+	.role-list li .func {
+		display: none;
+		margin-left: auto;
+		font-size: 10px;
+	}
+	
+	.role-list li .rename {
+		display: none;
 	}
 	
 	.role-list li:hover {
 		background-color: #e4e8f1;
 		cursor: pointer;
+	}
+	
+	.role-list li:hover .func {
+		display: inline-block;
 	}
 	
 	.role-list li.active {

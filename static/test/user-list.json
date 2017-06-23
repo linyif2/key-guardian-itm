@@ -1,0 +1,43 @@
+[
+    {
+        "account": "root",
+        "name": "ROOT",
+        "pass": "",
+        "roles": [
+            "ROLE_0001"
+        ],
+        "status": "enable",
+        "decryptPass": "i3i2o4u"
+    },
+    {
+        "account": "lide",
+        "name": "李德",
+        "pass": "",
+        "roles": [
+            "ROLE_0002"
+        ],
+        "status": "enable",
+        "decryptPass": "i3i2o4u"
+    },
+    {
+        "account": "liangnuan",
+        "name": "梁暖",
+        "pass": "",
+        "roles": [
+            "ROLE_0002",
+            "ROLE_0004"
+        ],
+        "status": "enable",
+        "decryptPass": "i3i2o4u"
+    },
+    {
+        "account": "hufang",
+        "name": "胡芳",
+        "pass": "",
+        "roles": [
+            "ROLE_0005"
+        ],
+        "status": "disable",
+        "decryptPass": "i3i2o4u"
+    }
+]

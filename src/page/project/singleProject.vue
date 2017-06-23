@@ -311,9 +311,11 @@
 			},
 			submitNew() {
 				this.showNewDialog = false
+				console.log("Submit New Account:",this.form)
 			},
 			submitEdit() {
 				this.showEditDialog = false
+				console.log("Submit Edit Account:",this.editform)
 			},
 			confirmDecryptPass() {
 				console.log(this.viewform)

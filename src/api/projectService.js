@@ -1,9 +1,12 @@
-//import config from '../config'
-import axios from 'axios'
+import ajaxService from './ajaxService'
 export default {
 	listProject() {
+		var param = {
+			url:'/static/test/project-list.json',
+			data:{}
+		}
 		return new Promise(function(resolve, reject) {
-			axios.get('/static/test/project-list.json', {}).then(response => {
+			ajaxService.get(param).then(response => {
 				resolve(response)
 			}).catch(function(err) {
 				reject(err);
@@ -11,8 +14,12 @@ export default {
 		});
 	},
 	listTagOptions() {
+		var param = {
+			url:'/static/test/project-tags.json',
+			data:{}
+		}
 		return new Promise(function(resolve, reject) {
-			axios.get('/static/test/project-tags.json', {}).then(response => {
+			ajaxService.get(param).then(response => {
 				resolve(response)
 			}).catch(function(err) {
 				reject(err);
@@ -20,10 +27,14 @@ export default {
 		});
 	},
 	getProject(id) {
-		return new Promise(function(resolve, reject) {
-			axios.get('/static/test/project-single.json', {
+		var param = {
+			url:'/static/test/project-single.json',
+			data:{
 				id: id
-			}).then(response => {
+			}
+		}
+		return new Promise(function(resolve, reject) {
+			ajaxService.get(param).then(response => {
 				resolve(response)
 			}).catch(function(err) {
 				reject(err);
