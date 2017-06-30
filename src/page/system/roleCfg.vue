@@ -4,18 +4,19 @@
 			<span class="header-text">
 				<i class="el-icon-setting"></i> 角色配置
 			</span>
+			<el-button style="margin-left: auto;" @click="submitData()" type="primary" size="small" icon="check">保存</el-button>
 		</el-row>
 		<el-row>
 			<el-col :span="7" class="role-list">
-				<h4>角色列表 <el-button type="" size="small" icon="plus">新增</el-button></h4>
+				<h4>角色列表 <el-button @click="addRole()" size="small" icon="plus">新增</el-button></h4>
 				<ul>
 					<div v-for="role in roleList" :key="role.id">
-						<li v-show="roleRename!=role.id" :class="{active:roleActive==role.id}" @click="selectRole(role)">{{role.name}}
+						<li v-show="roleRename!=role.id" :class="{fix:true,active:roleActive==role.id}" @click="selectRole(role)">{{role.name}}
 							<a type="text" class="func" @click="rename(role)">重命名</a>
 
 						</li>
 						<li v-show="roleRename==role.id" :class="{active:roleActive==role.id}" @click="selectRole(role)">
-							<el-input :id="roleRenameInputId(role.id)" v-model="role.name" placeholder="请输入内容" @blur="roleRename=''" size="small"></el-input>
+							<el-input :id="roleRenameInputId(role.id)" v-model="role.name" placeholder="请输入内容" @blur="saveRename(role)" size="small"></el-input>
 						</li>
 					</div>
 
@@ -23,12 +24,12 @@
 			</el-col>
 			<el-col :span="10" class="menu-tree">
 				<h4>菜单树</h4>
-				<el-tree :data="menuTree" show-checkbox node-key="id" :default-expanded-keys="[ 3]" :default-checked-keys="[5]" :props="defaultProps">
+				<el-tree v-loading="treeLoading" :data="menuTree" show-checkbox node-key="id" :default-expanded-keys="[3]" :props="defaultProps" @check-change="menuChange()" ref="menu">
 				</el-tree>
 			</el-col>
 			<el-col :span="7" class="auth-list">
 				<h4>权限列表</h4>
-				<el-checkbox-group v-model="checkList">
+				<el-checkbox-group v-model="roleAuth">
 					<h5>项目管理</h5>
 					<el-checkbox label="AUTH_0001">账号新增/修改</el-checkbox>
 					<el-checkbox label="AUTH_0002">账号删除</el-checkbox>
@@ -47,53 +48,29 @@
 
 <script>
 	import roleService from '../../api/roleService'
+	import menuService from '../../api/menuService'
 	export default {
 		name: 'roleCfg',
 		data() {
 			return {
 				roleActive: '',
 				roleRename: '',
-				checkList: [],
+				roleAuth: [],
+				roleMenu: [],
 				roleList: [],
 				authList: [],
-				menuTree: [{
-					id: 1,
-					label: '一级 1',
-					children: [{
-						id: 4,
-						label: '二级 1-1',
-						children: [{
-							id: 9,
-							label: '三级 1-1-1'
-						}, {
-							id: 10,
-							label: '三级 1-1-2'
-						}]
-					}]
-				}, {
-					id: 2,
-					label: '一级 2',
-					children: [{
-						id: 5,
-						label: '二级 2-1'
-					}, {
-						id: 6,
-						label: '二级 2-2'
-					}]
-				}, {
-					id: 3,
-					label: '一级 3',
-					children: [{
-						id: 7,
-						label: '二级 3-1'
-					}, {
-						id: 8,
-						label: '二级 3-2'
-					}]
-				}],
+				menuTree: null,
+				treeLoading: false,
 				defaultProps: {
 					children: 'children',
 					label: 'label'
+				},
+				newRoleCount: 0,
+				updatingData: {
+					id: null,
+					name: null,
+					auth: [],
+					menu: []
 				}
 			};
 		},
@@ -105,10 +82,29 @@
 				roleService.listRole().then(resp => {
 					this.roleList = resp.data
 				});
+				menuService.getMenuTree().then(resp => {
+					this.menuTree = resp.data
+				});
 			},
 			selectRole(row) {
 				this.roleActive = row.id
-				this.checkList = row.auth
+				this.roleAuth = row.auth
+
+				this.updatingData.id = row.id
+				this.updatingData.name = row.name
+				this.updatingData.auth = row.auth
+
+				if(row.id.indexOf('NEW') == 0) return;
+				this.treeLoading = true
+				this.$refs.menu.setCheckedKeys([]);
+				roleService.getRoleMenu().then(resp => {
+					this.roleMenu = resp.data.menu
+					this.updatingData.menu = this.roleMenu
+					this.$refs.menu.setCheckedKeys(this.roleMenu);
+					setTimeout(() => {
+						this.treeLoading = false;
+					}, 1000);
+				});
 			},
 			rename(row) {
 				var renameInput = document.getElementById("INPUT-" + row.id).getElementsByTagName("input")[0]
@@ -117,8 +113,46 @@
 					renameInput.focus()
 				}, 250)
 			},
+			saveRename(row) {
+				this.roleRename = ''
+				this.updatingData.name = row.name
+			},
 			roleRenameInputId(id) {
 				return 'INPUT-' + id
+			},
+			menuChange() {
+				this.roleMenu = this.$refs.menu.getCheckedKeys()
+			},
+			addRole() {
+				let newRole = {
+					id: 'NEW_' + this.newRoleCount,
+					name: '新建角色' + (this.newRoleCount > 0 ? '（' + this.newRoleCount + '）' : '')
+				}
+				this.roleList.push(newRole)
+				this.newRoleCount += 1
+				this.selectRole(newRole)
+				this.$nextTick(function() {
+					this.rename(newRole)
+				})
+			},
+			submitData() {
+				if(this.roleActive != '') {
+					console.log("保存角色", this.updatingData)
+					this.$message({
+						message: '保存成功',
+						type: 'success',
+					});
+					this.fetchData()
+					let orientRole = {
+						id: 'newid',
+					}
+					this.selectRole(orientRole)
+				}else{
+					this.$message({
+						message: '请选定角色再进行编辑',
+						type: 'warning',
+					});
+				}
 			}
 		},
 		mounted() {
@@ -128,6 +162,14 @@
 					_this.roleRename = ''
 				}
 			})
+		},
+		watch: {
+			roleAuth: function(val, old) {
+				this.updatingData.auth = val
+			},
+			roleMenu: function(val, old) {
+				this.updatingData.menu = val
+			}
 		}
 	}
 </script>
@@ -165,10 +207,14 @@
 	.role-list li {
 		height: 35px;
 		line-height: 35px;
-		padding: 0 10px;
-		font-size: 15px;
+		padding: 0 5px;
+		font-size: 14px;
 		display: flex;
 		align-items: center;
+	}
+	
+	.role-list li.fix {
+		padding: 0 10px 0 15px;
 	}
 	
 	.role-list li .func {

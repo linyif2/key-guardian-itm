@@ -10,7 +10,7 @@
 				<h4><el-input size="small" placeholder="输入关键字" v-model="filterText">
 				</el-input></h4>
 
-				<el-tree class="filter-tree" :data="data2" :props="defaultProps" default-expand-all :filter-node-method="filterNode" ref="tree2" :expand-on-click-node="false" :render-content="renderContent" @node-click="clickNode($event)">
+				<el-tree class="filter-tree" :data="menuTree" :props="defaultProps" default-expand-all :filter-node-method="filterNode" ref="menu" :render-content="renderContent" @node-click="clickNode($event)">
 				</el-tree>
 			</el-col>
 			<el-col :span="12" class="menu-info">
@@ -47,31 +47,47 @@
 </template>
 
 <script>
+	import menuService from '../../api/menuService'
+
 	export default {
 		name: 'menuCfg',
 		watch: {
 			filterText(val) {
-				this.$refs.tree2.filter(val);
+				this.$refs.menu.filter(val);
 			}
 		},
 
 		methods: {
+			fetchData() {
+				menuService.getMenuTree().then(resp => {
+					this.menuTree = resp.data
+				});
+			},
 			clickNode(event) {
 				console.log(event)
+				this.menuForm = {
+					id: event.id,
+					name: event.label,
+					url: '/aoffawe',
+					order: '100',
+					desc: '描述',
+					tags: ['谜团', '节点', '谜团', '节点', '谜团', '节点']
+				}
 			},
 			filterNode(value, data) {
 				if(!value) return true;
 				return data.label.indexOf(value) !== -1;
 			},
-			append(store, data) {
-				store.append({
-					id: id++,
-					label: 'testtest',
-					children: []
-				}, data);
+			append(store, data, event) {
+				event.stopPropagation();
+				//				store.append({
+				//					id: id++,
+				//					label: 'testtest',
+				//					children: []
+				//				}, data);
 			},
-
-			remove(store, data) {
+			remove(store, data, event) {
+				event.stopPropagation();
 				store.remove(data);
 			},
 			renderContent(h, {
@@ -79,64 +95,34 @@
 				data,
 				store
 			}) {
-				return(<span>
+				if(!node.data.noChild) {
+					return(<span>
             <span>
               <span>{node.label}</span>
             </span>
             <span style="float: right; margin-right: 20px">
-              <el-button size="mini" on-click={ () => this.append(store, data) } >添加子节点</el-button>
-              <el-button size="mini" on-click={ () => this.remove(store, data) } >删除</el-button>
+              <el-button size="mini" on-click={ () => this.append(store, data, event) } >New Child</el-button>
             </span>
           </span>);
+				} else {
+					return(<span>
+            <span>
+              <span>{node.label}</span>
+            </span>
+          </span>);
+				}
 			}
+		},
+		created() {
+			this.fetchData()
 		},
 		data() {
 			return {
 				showMenuForm: 'testing',
 				filterText: '',
 				tagsType: ['primary', 'success', 'warning'],
-				menuForm: {
-					name: '菜单1',
-					url: '/aofwejio.faw.ewfe/fawe',
-					order: '100',
-					desc: '描述',
-					tags: ['谜团', '节点', '谜团', '节点', '谜团', '节点']
-				},
-				data2: [{
-					id: 1,
-					label: '一级 1',
-					children: [{
-						id: 4,
-						label: '二级 1-1',
-						children: [{
-							id: 9,
-							label: '三级 1-1-1'
-						}, {
-							id: 10,
-							label: '三级 1-1-2'
-						}]
-					}]
-				}, {
-					id: 2,
-					label: '一级 2',
-					children: [{
-						id: 5,
-						label: '二级 2-1'
-					}, {
-						id: 6,
-						label: '二级 2-2'
-					}]
-				}, {
-					id: 3,
-					label: '一级 3',
-					children: [{
-						id: 7,
-						label: '二级 3-1'
-					}, {
-						id: 8,
-						label: '二级 3-2'
-					}]
-				}],
+				menuForm: {},
+				menuTree: [],
 				defaultProps: {
 					children: 'children',
 					label: 'label'

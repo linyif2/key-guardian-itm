@@ -125,12 +125,12 @@
 				this.showUserInfoDialog = false
 				if(this.workStatus == 'ADD') {
 					console.log('新增用户', this.editForm)
-					console.log('后台设置初始密码并返回')
+					console.log('后台设置初始密码并返回，刷新整页')
 					//POST至后台，新增账号，初始化密码和二级密码，返回账号对象
 					var currentUser = {
 						"account": "luohaihong",
 						"name": "罗海虹",
-						"pass": "238e298hf29hf3298",
+						"pass": "luohaihong",
 						"roles": [
 							"ROLE_0003",
 							"ROLE_0005"

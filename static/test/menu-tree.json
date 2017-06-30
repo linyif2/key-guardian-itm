@@ -1,0 +1,59 @@
+[
+    {
+        "id": 1,
+        "label": "项目首页",
+        "children": [
+            {
+                "id": 11,
+                "label": "项目1",
+                "children":[{
+                    "id": 111,
+                    "label": "132.121.1.22",
+                    "noChild":true
+                },{
+                    "id": 112,
+                    "label": "132.121.1.50",
+                    "noChild":true
+                },
+                {
+                    "id": 113,
+                    "label": "132.121.1.150",
+                    "noChild":true
+                }]
+            },
+            {
+                "id": 12,
+                "label": "项目2"
+            },
+            {
+                "id": 13,
+                "label": "项目3"
+            },
+            {
+                "id": 14,
+                "label": "项目4"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "label": "系统管理",
+        "children": [
+            {
+                "id": 21,
+                "label": "菜单配置",
+                "noChild":true
+            },
+            {
+                "id": 22,
+                "label": "角色配置",
+                "noChild":true
+            },
+            {
+                "id": 23,
+                "label": "用户管理",
+                "noChild":true
+            }
+        ]
+    }
+]

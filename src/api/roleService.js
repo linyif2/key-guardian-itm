@@ -13,5 +13,18 @@ export default {
 				reject(err);
 			});
 		});
+	},
+	getRoleMenu() {
+		var param = {
+			url:'/static/test/role-single.json',
+			data:{}
+		}
+		return new Promise(function(resolve, reject) {
+			ajaxService.get(param).then(response => {
+				resolve(response)
+			}).catch(function(err) {
+				reject(err);
+			});
+		});
 	}
 }
