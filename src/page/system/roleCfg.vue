@@ -63,7 +63,7 @@
 				treeLoading: false,
 				defaultProps: {
 					children: 'children',
-					label: 'label'
+					label: 'name'
 				},
 				newRoleCount: 0,
 				updatingData: {

@@ -1,57 +1,89 @@
 [
     {
         "id": 1,
-        "label": "项目首页",
+        "name": "项目首页",
+		"url": "/project",
+		"order": 1,
+		"desc": "世界之始",
+		"tags": ["根节点"],
         "children": [
             {
                 "id": 11,
-                "label": "项目1",
+                "name": "广东ITSM",
+                "url": "/project/11",
+        		"order": 11,
+        		"desc": "你猜这是啥",
+        		"tags": ["ITSM","广东"],
                 "children":[{
                     "id": 111,
-                    "label": "132.121.1.22",
+                    "name": "132.121.1.22",
+                    "url": "",
+            		"order": 111,
+            		"desc": "测试机",
+            		"tags": ["测试机"],
                     "noChild":true
                 },{
                     "id": 112,
-                    "label": "132.121.1.50",
+                    "name": "132.121.1.50",
+                    "url": "",
+            		"order": 112,
+            		"desc": "",
+            		"tags": [],
                     "noChild":true
                 },
                 {
                     "id": 113,
-                    "label": "132.121.1.150",
+                    "name": "132.121.1.150",
+                    "url": "",
+            		"order": 113,
+            		"desc": "FTP",
+            		"tags": ["测试FTP"],
                     "noChild":true
                 }]
             },
             {
                 "id": 12,
-                "label": "项目2"
-            },
-            {
-                "id": 13,
-                "label": "项目3"
-            },
-            {
-                "id": 14,
-                "label": "项目4"
+                "name": "CMDB",
+                "url": "/project/12",
+        		"order": 12,
+        		"desc": "CMDB",
+        		"tags": ["CMDB","广东"]
             }
         ]
     },
     {
         "id": 2,
-        "label": "系统管理",
+        "name": "系统管理",
+		"url": "",
+		"order": 2,
+		"desc": "世界之屎",
+		"tags": ["配置模块"],
         "children": [
             {
                 "id": 21,
-                "label": "菜单配置",
+                "name": "菜单配置",
+        		"url": "/system/menuCfg",
+        		"order": 21,
+        		"desc": "随便配配菜单，没别的幺蛾子",
+        		"tags": [],
                 "noChild":true
             },
             {
                 "id": 22,
-                "label": "角色配置",
+                "name": "角色配置",
+        		"url": "/system/roleCfg",
+        		"order": 22,
+        		"desc": "随便配配角色，有一点幺蛾子",
+        		"tags": [],
                 "noChild":true
             },
             {
                 "id": 23,
-                "label": "用户管理",
+                "name": "用户管理",
+        		"url": "/system/userCfg",
+        		"order": 23,
+        		"desc": "随便配配吧，最后的幺蛾子",
+        		"tags": [],
                 "noChild":true
             }
         ]
